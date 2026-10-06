@@ -22,7 +22,7 @@
 #define	DEF_COLOR_PROC_TERM	0x04U
 
 #define	DEF_CONSOLE_TITLE	"WerFault catcher"
-#define	DEF_WELCOME_TEXT	"WerFault catcher for Windows\n\n"
+#define	DEF_WELCOME_TEXT	"WerFault catcher for Windows Vista\n\n"
 
 #define	DEF_SS_IN_DD	86400U
 #define	DEF_SS_IN_HH	3600U
@@ -67,27 +67,27 @@ int main(int argument_qnnt, char *argument_string[]) {
 /*******************/
 
 // === code ===
-//	задаем заголовок окна и вступительный текст
+//	Р·Р°РґР°РµРј Р·Р°РіРѕР»РѕРІРѕРє РѕРєРЅР° Рё РІСЃС‚СѓРїРёС‚РµР»СЊРЅС‹Р№ С‚РµРєСЃС‚
 SetConsoleTitleA(DEF_CONSOLE_TITLE);
 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_WELCOME);
 printf(DEF_WELCOME_TEXT);
 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
 
-//	если переданы аргументы (нулевой=название программы)
+//	РµСЃР»Рё РїРµСЂРµРґР°РЅС‹ Р°СЂРіСѓРјРµРЅС‚С‹ (РЅСѓР»РµРІРѕР№=РЅР°Р·РІР°РЅРёРµ РїСЂРѕРіСЂР°РјРјС‹)
 if (argument_qnnt > 1) {
-	//	пробегаемся по аргументам от 1го до количества переданных
+	//	РїСЂРѕР±РµРіР°РµРјСЃСЏ РїРѕ Р°СЂРіСѓРјРµРЅС‚Р°Рј РѕС‚ 1РіРѕ РґРѕ РєРѕР»РёС‡РµСЃС‚РІР° РїРµСЂРµРґР°РЅРЅС‹С…
 	for (idx = 1; idx < argument_qnnt; idx = idx + 1) {
-		// если совпадает с переданным кодовым словом
+		// РµСЃР»Рё СЃРѕРІРїР°РґР°РµС‚ СЃ РїРµСЂРµРґР°РЅРЅС‹Рј РєРѕРґРѕРІС‹Рј СЃР»РѕРІРѕРј
 		if (_stricmp(argument_string[idx], "/debug") == 0) {
 			mode_DEBUG = 1;
-		// если совпадает с переданным кодовым словом
+		// РµСЃР»Рё СЃРѕРІРїР°РґР°РµС‚ СЃ РїРµСЂРµРґР°РЅРЅС‹Рј РєРѕРґРѕРІС‹Рј СЃР»РѕРІРѕРј
 		} else if (_stricmp(argument_string[idx], "/sleep") == 0) {
-			//	проверяем наличие следующего аргумента (должен содержать число)
+			//	РїСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ СЃР»РµРґСѓСЋС‰РµРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° (РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ С‡РёСЃР»Рѕ)
 			if (idx + 1 < argument_qnnt) {
-				//	вызываем функцию обработки аргумента
+				//	РІС‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЋ РѕР±СЂР°Р±РѕС‚РєРё Р°СЂРіСѓРјРµРЅС‚Р°
 				fct_parse_numeric_argument((const TYPE_BYTE *)argument_string[idx + 1], DEF_SLEEP_MIN, DEF_SLEEP_MAX, &sleep_value);
 
-				//	перескакиваем через числовой аргумент
+				//	РїРµСЂРµСЃРєР°РєРёРІР°РµРј С‡РµСЂРµР· С‡РёСЃР»РѕРІРѕР№ Р°СЂРіСѓРјРµРЅС‚
 				idx = idx + 1;
 			} else {
 				printf("ERROR: no number value after /sleep\n");
@@ -114,13 +114,13 @@ if (mode_DEBUG) {
 	CONST_Win_version_major = 6;	// XP=5.1 / Vista=6.0 / 7=6.1 / 8=6.2 / 8.1=6.3
 }
 
-//	получаем версию ОС
-Win_version.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+//	РїРѕР»СѓС‡Р°РµРј РІРµСЂСЃРёСЋ РћРЎ
+Win_version.dwOSVersionInfoSize = sizeof(Win_version);
 
 if (GetVersionEx(&Win_version)) {
-	//	если версия ОС менее требуемой
+	//	РµСЃР»Рё РІРµСЂСЃРёСЏ РћРЎ РјРµРЅРµРµ С‚СЂРµР±СѓРµРјРѕР№
 	if (Win_version.dwMajorVersion < CONST_Win_version_major) {
-		//	выводим ошибку и закрываемся
+		//	РІС‹РІРѕРґРёРј РѕС€РёР±РєСѓ Рё Р·Р°РєСЂС‹РІР°РµРјСЃСЏ
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_ERROR);
 		printf("ERROR: Windows Vista or newer is required\n\n");
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
@@ -129,29 +129,29 @@ if (GetVersionEx(&Win_version)) {
 		return 2;
 	} else {
 		while (1) {
-			//	если цель не запущена
+			//	РµСЃР»Рё С†РµР»СЊ РЅРµ Р·Р°РїСѓС‰РµРЅР°
 			if (!TARGET2_running) {
-				//	получаем снимок процессов
+				//	РїРѕР»СѓС‡Р°РµРј СЃРЅРёРјРѕРє РїСЂРѕС†РµСЃСЃРѕРІ
 				process_tree_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-				//	если не удается получить снимок процессов
+				//	РµСЃР»Рё РЅРµ СѓРґР°РµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ СЃРЅРёРјРѕРє РїСЂРѕС†РµСЃСЃРѕРІ
 				if (process_tree_snapshot == INVALID_HANDLE_VALUE) {
-					//	выводим ошибку
+					//	РІС‹РІРѕРґРёРј РѕС€РёР±РєСѓ
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_ERROR);
 					printf("ERROR: CreateToolhelp32Snapshot failed\n");
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
 				} else {
-					//	заносим в структуру процесса первый элемент списка процессов
-					struct_process.dwSize = sizeof(PROCESSENTRY32);
+					//	Р·Р°РЅРѕСЃРёРј РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ РїСЂРѕС†РµСЃСЃР° РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+					struct_process.dwSize = sizeof(struct_process);
 					if (Process32First(process_tree_snapshot, &struct_process)) {
 						do {
-							//	ищем в структуре совпадение имени exe с целевым
+							//	РёС‰РµРј РІ СЃС‚СЂСѓРєС‚СѓСЂРµ СЃРѕРІРїР°РґРµРЅРёРµ РёРјРµРЅРё exe СЃ С†РµР»РµРІС‹Рј
 							if (_stricmp(struct_process.szExeFile, CONST_TARGET2_NAME) == 0) {
-								//	если совпало, ставим флаг активности цели
+								//	РµСЃР»Рё СЃРѕРІРїР°Р»Рѕ, СЃС‚Р°РІРёРј С„Р»Р°Рі Р°РєС‚РёРІРЅРѕСЃС‚Рё С†РµР»Рё
 								TARGET2_running = TRUE;
-								//	получаем метку времени
+								//	РїРѕР»СѓС‡Р°РµРј РјРµС‚РєСѓ РІСЂРµРјРµРЅРё
 								time(&TARGET2_running_timestamp);
 
-								//	затираем пробелами 50 символов с начала строки, выводим локальное время и уведомление об активности цели
+								//	Р·Р°С‚РёСЂР°РµРј РїСЂРѕР±РµР»Р°РјРё 50 СЃРёРјРІРѕР»РѕРІ СЃ РЅР°С‡Р°Р»Р° СЃС‚СЂРѕРєРё, РІС‹РІРѕРґРёРј Р»РѕРєР°Р»СЊРЅРѕРµ РІСЂРµРјСЏ Рё СѓРІРµРґРѕРјР»РµРЅРёРµ РѕР± Р°РєС‚РёРІРЅРѕСЃС‚Рё С†РµР»Рё
 								printf("\r%-50s\r", " ");
 								SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_TIMESTAMP);
 								fct_print_local_time();
@@ -165,56 +165,59 @@ if (GetVersionEx(&Win_version)) {
 								fct_fprint_log_result = fct_fprint_log(log_text_size);
 								if (fct_fprint_log_result != 0) {
 									printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+									//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Р№ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+									CloseHandle(process_tree_snapshot);
 									return 5;
 								}
 
-								//	завершаем перебор
+								//	Р·Р°РІРµСЂС€Р°РµРј РїРµСЂРµР±РѕСЂ
 								break;
 							}
-						} while (Process32Next(process_tree_snapshot, &struct_process));	//	перебираем элементы списка процессов
+						} while (Process32Next(process_tree_snapshot, &struct_process));	//	РїРµСЂРµР±РёСЂР°РµРј СЌР»РµРјРµРЅС‚С‹ СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
 					}
-					//	закрываем открытый handle списка процессов
+					//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Р№ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
 					CloseHandle(process_tree_snapshot);
 				}
 			}
 
 			fct_throbber();
 
-			//	ожидаем появления целевого окна
-			HWND target_HWND = FindWindowA(NULL, CONST_TARGET1_TITLE);
+			//	РѕР¶РёРґР°РµРј РїРѕСЏРІР»РµРЅРёСЏ С†РµР»РµРІРѕРіРѕ РѕРєРЅР°
+			HWND	target_HWND = FindWindowA(NULL, CONST_TARGET1_TITLE);
 
-			//	если окно появилось
+			//	РµСЃР»Рё РѕРєРЅРѕ РїРѕСЏРІРёР»РѕСЃСЊ
 			if (target_HWND != NULL) {
-				//	затираем пробелами 50 символов с начала строки, выводим локальное время
+				//	Р·Р°С‚РёСЂР°РµРј РїСЂРѕР±РµР»Р°РјРё 50 СЃРёРјРІРѕР»РѕРІ СЃ РЅР°С‡Р°Р»Р° СЃС‚СЂРѕРєРё, РІС‹РІРѕРґРёРј Р»РѕРєР°Р»СЊРЅРѕРµ РІСЂРµРјСЏ
 				printf("\r%-50s\r", " ");
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_TIMESTAMP);
 				fct_print_local_time();
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
 
-				// определяем PID по "заголовку" окна
-				DWORD target_PID = 0;
+				// РѕРїСЂРµРґРµР»СЏРµРј PID РїРѕ "Р·Р°РіРѕР»РѕРІРєСѓ" РѕРєРЅР°
+				DWORD	target_PID = 0;
 				GetWindowThreadProcessId(target_HWND, &target_PID);
 				printf("HWND: %p => PID: %lu\n", target_HWND, target_PID);
 
-				//	получаем снимок процессов
+				//	РїРѕР»СѓС‡Р°РµРј СЃРЅРёРјРѕРє РїСЂРѕС†РµСЃСЃРѕРІ
 				process_tree_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
 				if (process_tree_snapshot == INVALID_HANDLE_VALUE) {
-					// если не удалось получить снимок процессов выводим ошибку
+					// РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ СЃРЅРёРјРѕРє РїСЂРѕС†РµСЃСЃРѕРІ РІС‹РІРѕРґРёРј РѕС€РёР±РєСѓ
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_ERROR);
 					printf("ERROR: CreateToolhelp32Snapshot failed\n");
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
 				} else {
-					//	заносим в структуру процесса первый элемент списка процессов
-					struct_process.dwSize = sizeof(PROCESSENTRY32);
+					//	Р·Р°РЅРѕСЃРёРј РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ РїСЂРѕС†РµСЃСЃР° РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+					struct_process.dwSize = sizeof(struct_process);
 					if (Process32First(process_tree_snapshot, &struct_process)) {
 						do {
-							//	ищем в структуре совпадение PID целевого процесса
+							//	РёС‰РµРј РІ СЃС‚СЂСѓРєС‚СѓСЂРµ СЃРѕРІРїР°РґРµРЅРёРµ PID С†РµР»РµРІРѕРіРѕ РїСЂРѕС†РµСЃСЃР°
 							if (struct_process.th32ProcessID == target_PID) {
 								printf("PID: %lu => process: %s\n", struct_process.th32ProcessID, struct_process.szExeFile);
-								//	проверяем, что имя exe в структуре процесса совпадает с искомым
+								//	РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РёРјСЏ exe РІ СЃС‚СЂСѓРєС‚СѓСЂРµ РїСЂРѕС†РµСЃСЃР° СЃРѕРІРїР°РґР°РµС‚ СЃ РёСЃРєРѕРјС‹Рј
 								if (_stricmp(struct_process.szExeFile, CONST_TARGET1_NAME) == 0) {
-									// отправляем запрос на завершение
+									// РѕС‚РїСЂР°РІР»СЏРµРј Р·Р°РїСЂРѕСЃ РЅР° Р·Р°РІРµСЂС€РµРЅРёРµ
 									SendMessageA(target_HWND, WM_CLOSE, 0, 0);
 									printf("Process %s ", struct_process.szExeFile);
 									SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_PROC_END);
@@ -225,24 +228,27 @@ if (GetVersionEx(&Win_version)) {
 									fct_fprint_log_result = fct_fprint_log(log_text_size);
 									if (fct_fprint_log_result != 0) {
 										printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+										//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Р№ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+										CloseHandle(process_tree_snapshot);
 										return 5;
 									}
 
 									while (1) {
-										//	получаем ещё 1 снимок процессов
+										//	РїРѕР»СѓС‡Р°РµРј РµС‰С‘ 1 СЃРЅРёРјРѕРє РїСЂРѕС†РµСЃСЃРѕРІ
 										process_tree_snapshot2 = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 										if (process_tree_snapshot2 == INVALID_HANDLE_VALUE) {
-											// если не удалось получить снимок процессов выводим ошибку
+											// РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ СЃРЅРёРјРѕРє РїСЂРѕС†РµСЃСЃРѕРІ РІС‹РІРѕРґРёРј РѕС€РёР±РєСѓ
 											SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_ERROR);
 											printf("ERROR: CreateToolhelp32Snapshot 2 failed\n");
 											SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
 										} else {
-											char target2_active = 0;
-											//	заносим в структуру процесса первый элемент списка процессов
-											struct_process2.dwSize = sizeof(PROCESSENTRY32);
+											TYPE_BOOL	target2_active = 0;
+											//	Р·Р°РЅРѕСЃРёРј РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ РїСЂРѕС†РµСЃСЃР° РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+											struct_process2.dwSize = sizeof(struct_process2);
 											if (Process32First(process_tree_snapshot2, &struct_process2)) {
 												do {
-													//	проверяем, что имя exe в структуре процесса совпадает с искомым
+													//	РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РёРјСЏ exe РІ СЃС‚СЂСѓРєС‚СѓСЂРµ РїСЂРѕС†РµСЃСЃР° СЃРѕРІРїР°РґР°РµС‚ СЃ РёСЃРєРѕРјС‹Рј
 													if (_stricmp(struct_process2.szExeFile, CONST_TARGET2_NAME) == 0) {
 														printf("Process %s: ", struct_process2.szExeFile);
 														SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_TIMESTAMP);
@@ -272,9 +278,12 @@ if (GetVersionEx(&Win_version)) {
 													fct_fprint_log_result = fct_fprint_log(log_text_size);
 													if (fct_fprint_log_result != 0) {
 														printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+														//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+														CloseHandle(process_tree_snapshot);
+														CloseHandle(process_tree_snapshot2);
 														return 5;
 													}
-
 												} else {
 													printf("Process %s uptime: ", CONST_TARGET2_NAME);
 													SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_TIMESTAMP);
@@ -285,13 +294,17 @@ if (GetVersionEx(&Win_version)) {
 													fct_fprint_log_result = fct_fprint_log(log_text_size);
 													if (fct_fprint_log_result != 0) {
 														printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+														//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+														CloseHandle(process_tree_snapshot);
+														CloseHandle(process_tree_snapshot2);
 														return 5;
 													}
 												}
 
 												TYPE_BYTE	path_AppData_local[MAX_PATH] = {0};
 												TYPE_BYTE	path_exe[MAX_PATH] = {0};
-												DWORD EnvironmentVariable_len = GetEnvironmentVariableA("LOCALAPPDATA", path_AppData_local, sizeof(path_AppData_local));
+												DWORD		EnvironmentVariable_len = GetEnvironmentVariableA("LOCALAPPDATA", path_AppData_local, sizeof(path_AppData_local));
 												if (EnvironmentVariable_len == 0 || EnvironmentVariable_len >= sizeof(path_AppData_local)) {
 													printf("ERROR: getting %%LOCALAPPDATA%% failed\n");
 
@@ -299,16 +312,23 @@ if (GetVersionEx(&Win_version)) {
 													fct_fprint_log_result = fct_fprint_log(log_text_size);
 													if (fct_fprint_log_result != 0) {
 														printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+														//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+														CloseHandle(process_tree_snapshot);
+														CloseHandle(process_tree_snapshot2);
 														return 5;
 													}
 
+													//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
+													CloseHandle(process_tree_snapshot);
+													CloseHandle(process_tree_snapshot2);
 													return 3;
 												}
 
 												snprintf(path_exe, sizeof(path_exe), "\"%s\\Microsoft\\prog.exe\"", path_AppData_local);
 
-												STARTUPINFOA sruct_STARTUPINFO = {0};
-												PROCESS_INFORMATION handle_PROC_INFO = {0};
+												STARTUPINFOA		sruct_STARTUPINFO = {0};
+												PROCESS_INFORMATION	handle_PROC_INFO = {0};
 												sruct_STARTUPINFO.cb = sizeof(sruct_STARTUPINFO);
 
 												if (!CreateProcessA(NULL, path_exe, NULL, NULL, FALSE, 0, NULL, NULL, &sruct_STARTUPINFO, &handle_PROC_INFO)) {
@@ -332,9 +352,14 @@ if (GetVersionEx(&Win_version)) {
 														fct_fprint_log_result = fct_fprint_log(log_text_size);
 														if (fct_fprint_log_result != 0) {
 															printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+															//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle
+															CloseHandle(process_tree_snapshot);
+															CloseHandle(process_tree_snapshot2);
+															CloseHandle(handle_PROC_INFO.hProcess);
+															CloseHandle(handle_PROC_INFO.hThread);
 															return 5;
 														}
-
 													} else {
 														TYPE_BYTE	CreateProcessA_message_866[256] = {0};
 														TYPE_INT	result_WideCharToMultiByte = WideCharToMultiByte(
@@ -355,9 +380,14 @@ if (GetVersionEx(&Win_version)) {
 															fct_fprint_log_result = fct_fprint_log(log_text_size);
 															if (fct_fprint_log_result != 0) {
 																printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+																//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle
+																CloseHandle(process_tree_snapshot);
+																CloseHandle(process_tree_snapshot2);
+																CloseHandle(handle_PROC_INFO.hProcess);
+																CloseHandle(handle_PROC_INFO.hThread);
 																return 5;
 															}
-
 														} else {
 															printf("CreateProcessA failed: %s", CreateProcessA_message_866);
 
@@ -365,31 +395,41 @@ if (GetVersionEx(&Win_version)) {
 															fct_fprint_log_result = fct_fprint_log(log_text_size);
 															if (fct_fprint_log_result != 0) {
 																printf("ERROR: logging failed [%u]\n", fct_fprint_log_result);
+
+																//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle
+																CloseHandle(process_tree_snapshot);
+																CloseHandle(process_tree_snapshot2);
+																CloseHandle(handle_PROC_INFO.hProcess);
+																CloseHandle(handle_PROC_INFO.hThread);
 																return 5;
 															}
-
 														}
 													}
+
+													//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Рµ handle
+													CloseHandle(process_tree_snapshot);
+													CloseHandle(process_tree_snapshot2);
+													CloseHandle(handle_PROC_INFO.hProcess);
+													CloseHandle(handle_PROC_INFO.hThread);
 													return 4;
 												}
 
 												CloseHandle(handle_PROC_INFO.hProcess);
 												CloseHandle(handle_PROC_INFO.hThread);
-
 												break;
 											}
-											//	закрываем открытый handle списка процессов
+											//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Р№ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
 											CloseHandle(process_tree_snapshot2);
 										}
 										Sleep(sleep_value);
 									}
 								}
-								//	завершаем перебор, т.к. нашли искомый PID
+								//	Р·Р°РІРµСЂС€Р°РµРј РїРµСЂРµР±РѕСЂ, С‚.Рє. РЅР°С€Р»Рё РёСЃРєРѕРјС‹Р№ PID
 								break;
 							}
-						} while (Process32Next(process_tree_snapshot, &struct_process));	//	перебираем элементы списка процессов
+						} while (Process32Next(process_tree_snapshot, &struct_process));	//	РїРµСЂРµР±РёСЂР°РµРј СЌР»РµРјРµРЅС‚С‹ СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
 					}
-					//	закрываем открытый handle списка процессов
+					//	Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Р№ handle СЃРїРёСЃРєР° РїСЂРѕС†РµСЃСЃРѕРІ
 					CloseHandle(process_tree_snapshot);
 				}
 			}
