@@ -2,8 +2,12 @@
 #define TYPES_H
 
 // === include ===
+// system path directory
 #include <stdint.h>
 
+// === declaration ===
+/*              0..2e64 - 1      */	typedef uint64_t	TYPE_ULINT;
+/*          -2e63..2e63 - 1      */	typedef int64_t		TYPE_LINT;
 /*              0..4 294 967 295 */	typedef uint32_t	TYPE_UDINT;
 /* -2 147 483 648..2 147 483 647 */	typedef int32_t		TYPE_DINT;
 /*              0..       65 535 */	typedef uint16_t	TYPE_UINT;

@@ -1,17 +1,18 @@
 // === include ===
+// system path directory
 #include <stdio.h>
 
 #include <windows.h>
 #include <time.h>
 
+// current folder
 #include "functions.h"
 #include "types.h"
 
 // === defines ===
-#define	log_file_name	"log"
-#define	log_file_name_old	"log_old"
+#define	log_file_name	".log"
+#define	log_file_name_old	".log_old"
 
-// === code ===
 void	fct_throbber(void) {
 	// === declaration ===
 	static TYPE_USINT	throbber_frame = 0;
@@ -43,10 +44,12 @@ void	fct_print_local_time(void) {
 }
 
 
-void	fct_parse_numeric_argument(const TYPE_BYTE *pointer_BYTE, const TYPE_UINT value_MIN, const TYPE_UINT value_MAX, TYPE_UINT *OUT_value) {
+void	fct_parse_numeric_argument(const TYPE_BYTE *pointer_BYTE, const TYPE_UINT value_MIN, const TYPE_UINT value_MAX, TYPE_UINT * const OUT_value) {
+	// === declaration ===
 	TYPE_UINT	tmp_value = 0;
 	TYPE_USINT	tmp_digit = 0;
 
+	// === code ===
 	//	пока значение по адресу указателя ненулевое (не конец строки)
 	while (*pointer_BYTE) {
 		//	если значение байта соответствует ASCII-коду цифры
@@ -83,9 +86,9 @@ void	fct_parse_numeric_argument(const TYPE_BYTE *pointer_BYTE, const TYPE_UINT v
 }
 
 
-TYPE_BYTE	fct_fprint_log(const TYPE_BYTE *string_to_log) {
+TYPE_BYTE	fct_fprint_log(const TYPE_BYTE * const string_to_log) {
 	// === declaration ===
-	FILE *handle_log_file;
+	FILE *pointer_log_file;
 	ULARGE_INTEGER	struct_bytes_ttl, struct_bytes_ttl_free, struct_bytes_avail_free;
 
 	// === code ===
@@ -100,16 +103,25 @@ TYPE_BYTE	fct_fprint_log(const TYPE_BYTE *string_to_log) {
 			return 12;
 		} else {
 			//	открываем файл лога на чтение
-			handle_log_file = fopen(log_file_name, "r");
-			if (handle_log_file == NULL) {
-				perror("ERROR: log file opening failed");
-				return 13;
+			pointer_log_file = fopen(log_file_name, "r");
+			if (pointer_log_file == NULL) {
+				switch (errno) {
+					case 2:
+						printf("WARNING: log file opening failed (error code %d - no such file)\n", errno);
+						break;
+
+					default:
+						printf("ERROR: log file opening failed (error code %d) - ", errno);
+						perror("");
+						return 13;
+						break;
+				}
 			} else {
 				//	получаем размер файла
 				size_t	log_file_size = 0;
-				fseek(handle_log_file, 0, SEEK_END);
-				log_file_size = ftell(handle_log_file);
-				fclose(handle_log_file);
+				fseek(pointer_log_file, 0, SEEK_END);
+				log_file_size = ftell(pointer_log_file);
+				fclose(pointer_log_file);
 
 				//	если размер файла превысил заданный
 				if (log_file_size > 100ULL * 1024) {
@@ -135,8 +147,8 @@ TYPE_BYTE	fct_fprint_log(const TYPE_BYTE *string_to_log) {
 	}
 
 	//	открываем файл лога на добавление
-	handle_log_file = fopen(log_file_name, "a");
-	if (handle_log_file == NULL) {
+	pointer_log_file = fopen(log_file_name, "a");
+	if (pointer_log_file == NULL) {
 		perror("ERROR: log file opening failed");
 		return 15;
 	} else {
@@ -148,7 +160,7 @@ TYPE_BYTE	fct_fprint_log(const TYPE_BYTE *string_to_log) {
 		struct_local_time = localtime(&local_time);
 
 		//	добавляем в файл метку времени
-		fprintf(handle_log_file, "[%04d.%02d.%02d %02d:%02d:%02d] ",
+		fprintf(pointer_log_file, "[%04d.%02d.%02d %02d:%02d:%02d] ",
 				struct_local_time->tm_year + 1900,
 				struct_local_time->tm_mon + 1,
 				struct_local_time->tm_mday,
@@ -157,8 +169,8 @@ TYPE_BYTE	fct_fprint_log(const TYPE_BYTE *string_to_log) {
 				struct_local_time->tm_sec);
 
 		//	и сообщение
-		fprintf(handle_log_file, "%s", string_to_log);
-		fclose(handle_log_file);
+		fprintf(pointer_log_file, "%s", string_to_log);
+		fclose(pointer_log_file);
 	}
 	return 0;
 }

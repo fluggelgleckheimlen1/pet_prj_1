@@ -1,10 +1,12 @@
 // === include ===
+// system path directory
 #include <stdio.h>
 
 #include <windows.h>
 #include <time.h>
 #include <tlhelp32.h>
 
+// nested folder
 #include "common/types.h"
 #include "common/functions.h"
 
@@ -22,7 +24,7 @@
 #define	DEF_COLOR_PROC_TERM	0x04U
 
 #define	DEF_CONSOLE_TITLE	"WerFault catcher"
-#define	DEF_WELCOME_TEXT	"WerFault catcher for Windows Vista\n\n"
+#define	DEF_WELCOME_TEXT	"WerFault catcher for Windows Vista/7\n\n"
 
 #define	DEF_SS_IN_DD	86400U
 #define	DEF_SS_IN_HH	3600U
@@ -104,7 +106,7 @@ if (mode_DEBUG) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), DEF_COLOR_REGULAR);
 
 	CONST_TARGET1_TITLE = "HxD";
-	CONST_TARGET1_NAME = "HxD64.exe";
+	CONST_TARGET1_NAME = "HxD32.exe";
 	CONST_TARGET2_NAME = "calc.exe";
 	CONST_Win_version_major = 5;	// XP=5.1 / Vista=6.0 / 7=6.1 / 8=6.2 / 8.1=6.3
 } else {
